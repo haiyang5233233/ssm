@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
 import com.cykj.springmvc.TestMyBatis;
 import com.cykj.springmvc.entity.Department;
+import com.cykj.springmvc.entity.LayUIData;
 import com.cykj.springmvc.mapper.DepartmentMapper;
 import com.cykj.springmvc.services.DepartmentService;
 
@@ -41,18 +43,45 @@ public class DepartmentControl {
 	public String getDepartment(HttpServletRequest request, Model model) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		int id = Integer.parseInt(request.getParameter("id"));
-		Department dep = departmentService.selectByPrimaryKey(id);
+		Department dep = departmentService.get(id);
 
 		model.addAttribute("department", dep);
 		return "showDepartment";
 	}
 
+	@RequestMapping(value = "/list")
+	@ResponseBody
+	public String list() {
+		List<Department> data=departmentService.query();
+		LayUIData<Department> list=new LayUIData<Department>();
+		list.setCode("0");
+		list.setCount(data.size()+"");
+		list.setData(data);
+		list.setMsg("");
+		
+		return JSON.toJSONString(list);
+	}
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@ResponseBody
+	public String save(HttpServletRequest request) {
+		
+		String name=request.getParameter("name");
+		String remark=request.getParameter("remark");
+
+		Department data=new Department();
+		data.setName(name);
+		data.setRemark(remark);
+		departmentService.save(data);
+		
+		
+		return "OK";
+	}
 	@RequestMapping(value = "/showView", method = RequestMethod.GET)
 	public ModelAndView showDepartment(HttpServletRequest request) {
 		try {
 			Map<String, Object> params = new HashMap<String, Object>();
-			Department dep = departmentService.selectByPrimaryKey(Integer.parseInt(request.getParameter("id")));
-			logger.info("查询结果:"+dep.getName());
+			Department dep = departmentService.get(Integer.parseInt(request.getParameter("id")));
+			logger.info("查询结果:" + dep.getName());
 			return new ModelAndView("showDepartment", "department", dep);// 返回登录页面
 		} catch (Exception ex) {
 			logger.info(ex.getMessage());
