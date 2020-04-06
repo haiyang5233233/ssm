@@ -28,7 +28,7 @@ import com.cykj.springmvc.services.DepartmentService;
 
 @SuppressWarnings("all")
 @Controller
-@RequestMapping("/departmentControl")
+@RequestMapping("/departmentControl/")
 public class DepartmentControl {
 
 	@Autowired(required = true)
@@ -39,7 +39,7 @@ public class DepartmentControl {
 	/**
 	 * 显示分页列表 返回值以流的形式返回去//@ResponseBody--api使用
 	 */
-	@RequestMapping(value = "/get")
+	@RequestMapping(value = "get")
 	public String getDepartment(HttpServletRequest request, Model model) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		int id = Integer.parseInt(request.getParameter("id"));
@@ -49,19 +49,18 @@ public class DepartmentControl {
 		return "showDepartment";
 	}
 
-	@RequestMapping(value = "/list")
+	@RequestMapping(value = "list")
 	@ResponseBody
-	public String list() {
+	public Object list() {
 		List<Department> data=departmentService.query();
 		LayUIData<Department> list=new LayUIData<Department>();
 		list.setCode("0");
 		list.setCount(data.size()+"");
 		list.setData(data);
 		list.setMsg("");
-		
-		return JSON.toJSONString(list);
+		return list;
 	}
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@RequestMapping(value = "save", method = RequestMethod.POST)
 	@ResponseBody
 	public String save(HttpServletRequest request) {
 		
