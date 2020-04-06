@@ -62,18 +62,15 @@ public class DepartmentControl {
 	}
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	@ResponseBody
-	public String save(HttpServletRequest request) {
-		
+	public Object save(HttpServletRequest request) {
 		String name=request.getParameter("name");
 		String remark=request.getParameter("remark");
-
 		Department data=new Department();
 		data.setName(name);
 		data.setRemark(remark);
 		departmentService.save(data);
-		
-		
-		return "OK";
+		String result="OK";
+		return result;
 	}
 	@RequestMapping(value = "/showView", method = RequestMethod.GET)
 	public ModelAndView showDepartment(HttpServletRequest request) {

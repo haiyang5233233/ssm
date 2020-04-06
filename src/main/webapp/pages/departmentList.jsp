@@ -29,7 +29,7 @@ layui.use('table', function(){
   table.render({
     elem: '#list'
     ,url:'${pageContext.request.contextPath}/departmentControl/list'
-    ,dataType:"json"
+    ,dataType:'json'
     ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
     ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
     ,cols: [[
@@ -52,10 +52,10 @@ layui.use('table', function(){
                   name:'新部门',remark:'部门备注'
               },  
               success: function(data){ 
-                if(data=='OK'){
+                if(data=="OK"){
                   layer.msg('添加成功');
-                }else if(data=='error'){
-                  layer.msg('添加失败');
+                }else{
+                  layer.msg(data);
                 }
               }  
           });
