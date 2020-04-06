@@ -69,8 +69,7 @@ public class DepartmentControl {
 		data.setName(name);
 		data.setRemark(remark);
 		departmentService.save(data);
-		String result="OK";
-		return result;
+		return "OK";
 	}
 	@RequestMapping(value = "/showView", method = RequestMethod.GET)
 	public ModelAndView showDepartment(HttpServletRequest request) {
